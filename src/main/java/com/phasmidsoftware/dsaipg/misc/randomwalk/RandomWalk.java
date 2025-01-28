@@ -21,7 +21,7 @@ public class RandomWalk {
      */
     public double distance() {
         // TO BE IMPLEMENTED 
-         return 0.0;
+        return Math.sqrt((long) x * x + (long) y * y);
         // END SOLUTION
     }
 
@@ -33,7 +33,8 @@ public class RandomWalk {
      */
     private void move(int dx, int dy) {
         // TO BE IMPLEMENTED  do move
-         throw new RuntimeException("Not implemented");
+        x += dx;
+        y += dy;
         // END SOLUTION
     }
 
@@ -44,7 +45,9 @@ public class RandomWalk {
      */
     private void randomWalk(int m) {
         // TO BE IMPLEMENTED 
-throw new RuntimeException("implementation missing");
+        for (int i = 0; i < m; i++) {
+            randomMove();
+        }
     }
 
     /**
@@ -90,12 +93,40 @@ throw new RuntimeException("implementation missing");
      *             If args is empty, the method throws a RuntimeException indicating invalid syntax.
      */
     public static void main(String[] args) {
-        if (args.length == 0)
-            throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
-        int m = Integer.parseInt(args[0]);
-        int n = 30;
-        if (args.length > 1) n = Integer.parseInt(args[1]);
-        double meanDistance = randomWalkMulti(m, n);
-        System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+        int[] mValues = {10, 20, 50, 100, 500, 1000, 5000, 10000};
+        int n = 1000;
+
+        double sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0; // For linear regression
+
+        if (args.length == 0) {
+            for (int m : mValues) {
+                double meanDistance = randomWalkMulti(m, n);
+                double sqrtM = Math.sqrt(m);
+                double ratio = meanDistance / sqrtM;
+
+                System.out.println(m + " steps mean distance: " + meanDistance + " over " + n +
+                        " experiments, sqrt(m) = " + Math.sqrt(m) + ", ratio between d and sqrt of m is " + ratio);
+
+                // Collect data for linear regression
+                sumX += sqrtM;
+                sumY += meanDistance;
+                sumXY += sqrtM * meanDistance;
+                sumX2 += sqrtM * sqrtM;
+            }
+
+            // Compute slope (k) using Least Squares Regression
+            int numPoints = mValues.length;
+            double slope = (numPoints * sumXY - sumX * sumY) / (numPoints * sumX2 - sumX * sumX);
+
+            System.out.println("\nSo, the relationship is : d ≈ " + slope + " * sqrt(m)");
+
+        } else {
+            int m = Integer.parseInt(args[0]);
+            int nExp = (args.length > 1) ? Integer.parseInt(args[1]) : 1000;
+
+            double meanDistance = randomWalkMulti(m, nExp);
+            System.out.println(m + " steps mean distance: " + meanDistance + " over " + nExp +
+                    " experiments, sqrt(m) = " + Math.sqrt(m));
+        }
     }
 }
