@@ -50,7 +50,22 @@ public class ThreeSumQuadratic implements ThreeSum {
      List<Triple> getTriples(int j) {
          List<Triple> triples = new ArrayList<>();
         // TO BE IMPLEMENTED  : for each candidate, test if a[i] + a[j] + a[k] = 0.
-throw new RuntimeException("implementation missing");
+         int left = 0, right = length - 1;
+
+         while (left < j && right > j) {
+             int sum = a[left] + a[j] + a[right];
+
+             if (sum == 0) {
+                 triples.add(new Triple(a[left], a[j], a[right]));
+                 left++;  // Move left pointer forward to check next possibility
+                 right--; // Move right pointer backward
+             } else if (sum < 0) {
+                 left++;
+             } else {
+                 right--;
+             }
+         }
+         return triples;
     }
 
     private final int[] a;
