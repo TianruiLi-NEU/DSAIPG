@@ -66,6 +66,13 @@ public class InsertionSortBasic<S> {
      */
     void insert(S[] a, int from, int i) {
         // TO BE IMPLEMENTED  : implement inner loop of insertion sort using comparator
+        S current = a[i];
+        int j = i - 1;
+        while (j >= from && comparator.compare(a[j], current) > 0) {
+            a[j + 1] = a[j];  // Shift element right
+            j--;
+        }
+        a[j + 1] = current;  // Place current in correct position
         // END SOLUTION
     }
 
