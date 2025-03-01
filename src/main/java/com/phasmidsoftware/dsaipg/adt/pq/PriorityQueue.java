@@ -117,11 +117,19 @@ public class PriorityQueue<K> implements Iterable<K> {
      * @param key the value of the key to give
      */
     public void give(K key) {
-        if (last == binHeap.length - first)
-            last--; // if we are already at capacity, then we arbitrarily trash the least eligible element
+        //if (last == binHeap.length - first)
+            //last--; // if we are already at capacity, then we arbitrarily trash the least eligible element
         // (even if it's more eligible than key).
-        binHeap[++last + first - 1] = key; // insert the key into the binary heap just after the last element
-        swimUp(last + first - 1); // reorder the binary heap
+        //binHeap[++last + first - 1] = key; // insert the key into the binary heap just after the last element
+        //swimUp(last + first - 1); // reorder the binary heap
+        if (last == binHeap.length - first) {
+            if (highest == null || comparator.compare(highest, binHeap[last + first - 1]) < 0) {
+                highest = binHeap[last + first - 1]; // Track the highest spilled element
+            }
+            last--; // Remove the lowest-priority element
+        }
+        binHeap[++last + first - 1] = key;
+        swimUp(last + first - 1);
     }
 
     /**
@@ -167,7 +175,7 @@ public class PriorityQueue<K> implements Iterable<K> {
      * @param k the starting index of the element in the heap to be adjusted.
      */
     void snake(@SuppressWarnings("SameParameterValue") int k) {
-        swimUp(doHeapify(k, (a, b) -> !unordered(a, b)));
+        swimUp(doHeapify(k, (a, b) -> false));
     }
 
     /**
@@ -275,7 +283,7 @@ public class PriorityQueue<K> implements Iterable<K> {
     private final K[] binHeap; // binHeap[i] is ith element of binary heap (first element is reserved)
     private int last; // number of elements in the binary heap
     private final boolean floyd; //Determine whether floyd's snake method is on or off inside the take method
-
+    public K highest;
     public static void main(String[] args) {
         doMain();
     }
