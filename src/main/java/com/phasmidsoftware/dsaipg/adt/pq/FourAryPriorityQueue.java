@@ -33,8 +33,13 @@ public class FourAryPriorityQueue<K> implements Iterable<K> {
     }
 
     public void give(K key) {
-        if (last == heap.length - first)
+        if (last == heap.length - first){
+            if (highest == null ||
+                    ((comparator.compare(highest, heap[last + first - 1]) > 0) ^ max)) {
+                highest = heap[last + first -1];
+            }
             last--;
+        }
         heap[++last + first - 1] = key;
         swimUp(last + first - 1);
     }

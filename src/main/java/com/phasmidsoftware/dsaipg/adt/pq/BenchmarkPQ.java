@@ -136,8 +136,8 @@ public class BenchmarkPQ {
 
     public static void test(String desc, Ben ben, BenchmarkBase benchmark) {
         System.out.println(desc);
-        System.out.println("Average time: " + ben.apply(benchmark));
-        System.out.println("The highest of the spilled elements during the last experiment: " + benchmark.spilled);
+        System.out.println("time: " + ben.apply(benchmark));
+        System.out.println("highest " + benchmark.spilled);
         System.out.println();
     }
 
@@ -148,10 +148,10 @@ public class BenchmarkPQ {
         int removeNum = 4000;
 
         for (int i = 1; i <= 11; i++) {
-            test("Test binary PQ on capacity " + (capacity * i), ben, new BenchmarkBinaryPQ(capacity * i, insertNum * i, removeNum * i, false));
-            test("Test binary PQ (Floyd) on capacity " + (capacity * i), ben, new BenchmarkBinaryPQ(capacity * i, insertNum * i, removeNum * i, true));
-            test("Test 4-ary PQ on capacity " + (capacity * i), ben, new BenchmarkFourAryPQ(capacity * i, insertNum * i, removeNum * i, false));
-            test("Test 4-ary PQ (Floyd) on capacity " + (capacity * i), ben, new BenchmarkFourAryPQ(capacity * i, insertNum * i, removeNum * i, true));
+            test("PriorityQueue on capacity " + (capacity * i), ben, new BenchmarkBinaryPQ(capacity * i, insertNum * i, removeNum * i, false));
+            test("PriorityQueue (Floyd) on capacity " + (capacity * i), ben, new BenchmarkBinaryPQ(capacity * i, insertNum * i, removeNum * i, true));
+            test("FourAryPriorityQueue on capacity " + (capacity * i), ben, new BenchmarkFourAryPQ(capacity * i, insertNum * i, removeNum * i, false));
+            test("FourAryPriorityQueue (Floyd) on capacity " + (capacity * i), ben, new BenchmarkFourAryPQ(capacity * i, insertNum * i, removeNum * i, true));
         }
     }
 }
