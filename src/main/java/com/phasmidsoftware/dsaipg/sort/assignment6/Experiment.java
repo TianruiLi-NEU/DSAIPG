@@ -24,7 +24,7 @@ public class Experiment {
 
         for (int i = 0; i < iterations; i++) {
             int size = initialSize * (1 << i);
-            System.out.println("数组长度：" + size);
+            System.out.println("length：" + size);
 
             Supplier<Integer[]> supplier = () -> RandomArrayGenerator.generate(size);
 
@@ -34,10 +34,10 @@ public class Experiment {
             double timeQuick = timeBenchmark.run(quickSort, supplier);
             double timeQuickDP = timeBenchmark.run(quickSortDualPivot, supplier);
 
-            System.out.println("基于时间的排序结果：");
-            System.out.printf("HeapSort: %.3f 毫秒\n", timeHeap);
-            System.out.printf("MergeSort: %.3f 毫秒\n", timeMerge);
-            System.out.printf("QuickSort: %.3f 毫秒\n", timeQuick);
+            System.out.println("Average Time:");
+            System.out.printf("HeapSort: %.3f ms\n", timeHeap);
+            System.out.printf("MergeSort: %.3f ms\n", timeMerge);
+            System.out.printf("QuickSort: %.3f ms\n", timeQuick);
             System.out.printf("QuickSortDualPivot: %.3f ms\n", timeQuickDP);
             // 统计量版本的测试
             BenchmarkInstru.Result resultHeap = instruBenchmark.run(heapSortInstru, supplier);
@@ -45,7 +45,7 @@ public class Experiment {
             BenchmarkInstru.Result resultQuick = instruBenchmark.run(quickSortInstru, supplier);
             BenchmarkInstru.Result resultQuickDP = instruBenchmark.run(quickSortDPInstru, supplier);
 
-            System.out.println("基于统计量的排序结果：");
+            System.out.println("Average Statistics:");
             System.out.println("HeapSortInstru: " + resultHeap);
             System.out.println("MergeSortInstru: " + resultMerge);
             System.out.println("QuickSortInstru: " + resultQuick);
