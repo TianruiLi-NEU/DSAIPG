@@ -39,7 +39,7 @@ public class Experiment {
             System.out.printf("MergeSort: %.3f ms\n", timeMerge);
             System.out.printf("QuickSort: %.3f ms\n", timeQuick);
             System.out.printf("QuickSortDualPivot: %.3f ms\n", timeQuickDP);
-            // 统计量版本的测试
+
             BenchmarkInstru.Result resultHeap = instruBenchmark.run(heapSortInstru, supplier);
             BenchmarkInstru.Result resultMerge = instruBenchmark.run(mergeSortInstru, supplier);
             BenchmarkInstru.Result resultQuick = instruBenchmark.run(quickSortInstru, supplier);
