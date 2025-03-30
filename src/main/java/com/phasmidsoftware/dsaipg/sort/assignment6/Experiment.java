@@ -1,0 +1,58 @@
+package com.phasmidsoftware.dsaipg.sort.assignment6;
+
+import java.util.function.Supplier;
+
+
+public class Experiment {
+    public static void main(String[] args) {
+        int initialSize = 10000;
+        int iterations = 5;
+        int runs = 10;
+
+        Benchmark<Integer> timeBenchmark = new Benchmark<>(runs);
+        BenchmarkInstru<Integer> instruBenchmark = new BenchmarkInstru<>(runs);
+
+        HeapSort<Integer> heapSort = new HeapSort<>();
+        MergeSort<Integer> mergeSort = new MergeSort<>();
+        QuickSort<Integer> quickSort = new QuickSort<>();
+        QuickSortDualPivot<Integer> quickSortDualPivot = new QuickSortDualPivot<>();
+        HeapSortInstru<Integer> heapSortInstru = new HeapSortInstru<>();
+        MergeSortInstru<Integer> mergeSortInstru = new MergeSortInstru<>();
+        QuickSortInstru<Integer> quickSortInstru = new QuickSortInstru<>();
+        QuickSortDPInstru<Integer> quickSortDPInstru = new QuickSortDPInstru<>();
+
+
+        for (int i = 0; i < iterations; i++) {
+            int size = initialSize * (1 << i);
+            System.out.println("数组长度：" + size);
+
+            Supplier<Integer[]> supplier = () -> RandomArrayGenerator.generate(size);
+
+
+            double timeHeap = timeBenchmark.run(heapSort, supplier);
+            double timeMerge = timeBenchmark.run(mergeSort, supplier);
+            double timeQuick = timeBenchmark.run(quickSort, supplier);
+            double timeQuickDP = timeBenchmark.run(quickSortDualPivot, supplier);
+
+            System.out.println("基于时间的排序结果：");
+            System.out.printf("HeapSort: %.3f 毫秒\n", timeHeap);
+            System.out.printf("MergeSort: %.3f 毫秒\n", timeMerge);
+            System.out.printf("QuickSort: %.3f 毫秒\n", timeQuick);
+            System.out.printf("QuickSortDualPivot: %.3f ms\n", timeQuickDP);
+            // 统计量版本的测试
+            BenchmarkInstru.Result resultHeap = instruBenchmark.run(heapSortInstru, supplier);
+            BenchmarkInstru.Result resultMerge = instruBenchmark.run(mergeSortInstru, supplier);
+            BenchmarkInstru.Result resultQuick = instruBenchmark.run(quickSortInstru, supplier);
+            BenchmarkInstru.Result resultQuickDP = instruBenchmark.run(quickSortDPInstru, supplier);
+
+            System.out.println("基于统计量的排序结果：");
+            System.out.println("HeapSortInstru: " + resultHeap);
+            System.out.println("MergeSortInstru: " + resultMerge);
+            System.out.println("QuickSortInstru: " + resultQuick);
+            System.out.println("QuickSortDPInstru: " + resultQuickDP);
+
+            System.out.println("-------------------------------");
+        }
+    }
+}
+
